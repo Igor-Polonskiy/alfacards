@@ -85,13 +85,13 @@ const cardSlice = createSlice({
 
         toggleLike(state, action) {
             const toggledLike = state.cards.find(card => card.id === action.payload.id);
-            console.log(state.cards)
             toggledLike.liked = !toggledLike.liked;
         },
 
         deleteCard(state, action) {
             state.cards = state.cards.filter(card => card.id !== action.payload.id)
-        }
+        },
+
 
     },
 });
