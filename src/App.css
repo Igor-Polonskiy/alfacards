@@ -1,23 +1,49 @@
 .App {
-  text-align: center;
+    text-align: center;
 }
 
-ul {
-  list-style: none;
+.card {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    background-position: 50% 50%;
+    background-size: cover;
+    width: 300px;
+    height: 300px;
+    margin: 20px;
+    padding: 10px;
+    box-sizing: border-box;
 }
 
-li {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
+.cardfield {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
 }
 
-input:checked + span {
-  text-decoration: line-through;
+.heart {
+    cursor: pointer;
+    ;
 }
 
-span:last-child {
-  color: red;
-  cursor: pointer;
+.delete {
+    background-color: lightgreen;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+    cursor: pointer;
+}
+
+.unliked {
+    color: lightcoral
+}
+
+.liked {
+    color: red;
+}
+
+.heart:hover {
+    transform: scale(1.1);
 }

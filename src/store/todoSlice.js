@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+
+
 const initialState = {
     cards: [{
             "albumId": 1,
@@ -74,19 +76,26 @@ const initialState = {
     ]
 }
 
+initialState.cards.map(card => card.liked = false)
+
 const cardSlice = createSlice({
     name: 'cards',
     initialState,
     reducers: {
 
-        toggleComplete(state, action) {
-            const toggledTodo = state.cards.find(todo => todo.id === action.payload.id);
-            toggledTodo.completed = !toggledTodo.completed;
+        toggleLike(state, action) {
+            const toggledLike = state.cards.find(card => card.id === action.payload.id);
+            console.log(state.cards)
+            toggledLike.liked = !toggledLike.liked;
         },
+
+        deleteCard(state, action) {
+            state.cards = state.cards.filter(card => card.id !== action.payload.id)
+        }
 
     },
 });
 
-export const { toggleComplete } = cardSlice.actions;
+export const { toggleLike, deleteCard } = cardSlice.actions;
 
 export default cardSlice.reducer;
