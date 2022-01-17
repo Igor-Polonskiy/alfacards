@@ -1,142 +1,92 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
-export const fetchTodos = createAsyncThunk(
-    'todos/fetchTodos',
-    async function(_, { rejectWithValue }) {
-        try {
-            const response = await fetch('https://jsonplaceholder.typicode.com/todos?_limit=10');
-
-            if (!response.ok) {
-                throw new Error('Server Error!');
-            }
-
-            const data = await response.json();
-
-            return data;
-        } catch (error) {
-            return rejectWithValue(error.message);
-        }
-    }
-);
-
-export const deleteTodo = createAsyncThunk(
-    'todos/deleteTodo',
-    async function(id, { rejectWithValue, dispatch }) {
-        try {
-            const response = await fetch(`https://jsonplaceholder.typicode.com/todos/${id}`, {
-                method: 'DELETE',
-            })
-
-            if (!response.ok) {
-                throw new Error('Can\'t delete task. Server error.');
-            }
-
-            dispatch(removeTodo({ id }));
-
-        } catch (error) {
-            return rejectWithValue(error.message);
-        }
-    }
-);
-
-export const toggleStatus = createAsyncThunk(
-    'todos/toggleStatus',
-    async function(id, { rejectWithValue, dispatch, getState }) {
-        const todo = getState().todos.todos.find(todo => todo.id === id);
-
-        try {
-            const response = await fetch(`https://jsonplaceholder.typicode.com/todos/${id}`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    completed: !todo.completed,
-                })
-            });
-
-            if (!response.ok) {
-                throw new Error('Can\'t toggle status. Server error.');
-            }
-
-            dispatch(toggleComplete({ id }));
-
-        } catch (error) {
-            return rejectWithValue(error.message)
-        }
-    }
-);
-
-export const addNewTodo = createAsyncThunk(
-    'todos/addNewTodo',
-    async function(text, { rejectWithValue, dispatch }) {
-        try {
-            const todo = {
-                title: text,
-                userId: 1,
-                completed: false,
-            };
-
-            const response = await fetch('https://jsonplaceholder.typicode.com/todos', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(todo)
-            });
-
-            if (!response.ok) {
-                throw new Error('Can\'t add task. Server error.');
-            }
-
-            const data = await response.json();
-            dispatch(addTodo(data));
-
-        } catch (error) {
-            return rejectWithValue(error.message);
-        }
-    }
-);
-
-const setError = (state, action) => {
-    state.status = 'rejected';
-    state.error = action.payload;
+const initialState = {
+    cards: [{
+            "albumId": 1,
+            "id": 1,
+            "title": "accusamus beatae ad facilis cum similique qui sunt",
+            "url": "https://via.placeholder.com/600/92c952",
+            "thumbnailUrl": "https://via.placeholder.com/150/92c952"
+        },
+        {
+            "albumId": 1,
+            "id": 2,
+            "title": "reprehenderit est deserunt velit ipsam",
+            "url": "https://via.placeholder.com/600/771796",
+            "thumbnailUrl": "https://via.placeholder.com/150/771796"
+        },
+        {
+            "albumId": 1,
+            "id": 3,
+            "title": "officia porro iure quia iusto qui ipsa ut modi",
+            "url": "https://via.placeholder.com/600/24f355",
+            "thumbnailUrl": "https://via.placeholder.com/150/24f355"
+        },
+        {
+            "albumId": 1,
+            "id": 4,
+            "title": "culpa odio esse rerum omnis laboriosam voluptate repudiandae",
+            "url": "https://via.placeholder.com/600/d32776",
+            "thumbnailUrl": "https://via.placeholder.com/150/d32776"
+        },
+        {
+            "albumId": 1,
+            "id": 5,
+            "title": "natus nisi omnis corporis facere molestiae rerum in",
+            "url": "https://via.placeholder.com/600/f66b97",
+            "thumbnailUrl": "https://via.placeholder.com/150/f66b97"
+        },
+        {
+            "albumId": 1,
+            "id": 6,
+            "title": "accusamus ea aliquid et amet sequi nemo",
+            "url": "https://via.placeholder.com/600/56a8c2",
+            "thumbnailUrl": "https://via.placeholder.com/150/56a8c2"
+        },
+        {
+            "albumId": 1,
+            "id": 7,
+            "title": "officia delectus consequatur vero aut veniam explicabo molestias",
+            "url": "https://via.placeholder.com/600/b0f7cc",
+            "thumbnailUrl": "https://via.placeholder.com/150/b0f7cc"
+        },
+        {
+            "albumId": 1,
+            "id": 8,
+            "title": "aut porro officiis laborum odit ea laudantium corporis",
+            "url": "https://via.placeholder.com/600/54176f",
+            "thumbnailUrl": "https://via.placeholder.com/150/54176f"
+        },
+        {
+            "albumId": 1,
+            "id": 9,
+            "title": "qui eius qui autem sed",
+            "url": "https://via.placeholder.com/600/51aa97",
+            "thumbnailUrl": "https://via.placeholder.com/150/51aa97"
+        },
+        {
+            "albumId": 1,
+            "id": 10,
+            "title": "beatae et provident et ut vel",
+            "url": "https://via.placeholder.com/600/810b14",
+            "thumbnailUrl": "https://via.placeholder.com/150/810b14"
+        },
+    ]
 }
 
-const todoSlice = createSlice({
-    name: 'todos',
-    initialState: {
-        todos: [],
-        status: null,
-        error: null,
-    },
+const cardSlice = createSlice({
+    name: 'cards',
+    initialState,
     reducers: {
-        addTodo(state, action) {
-            state.todos.push(action.payload);
-        },
+
         toggleComplete(state, action) {
-            const toggledTodo = state.todos.find(todo => todo.id === action.payload.id);
+            const toggledTodo = state.cards.find(todo => todo.id === action.payload.id);
             toggledTodo.completed = !toggledTodo.completed;
         },
-        removeTodo(state, action) {
-            state.todos = state.todos.filter(todo => todo.id !== action.payload.id);
-        }
-    },
-    extraReducers: {
-        [fetchTodos.pending]: (state) => {
-            state.status = 'loading';
-            state.error = null;
-        },
-        [fetchTodos.fulfilled]: (state, action) => {
-            state.status = 'resolved';
-            state.todos = action.payload;
-        },
-        [fetchTodos.rejected]: setError,
-        [deleteTodo.rejected]: setError,
-        [toggleStatus.rejected]: setError,
+
     },
 });
 
-const { addTodo, toggleComplete, removeTodo } = todoSlice.actions;
+export const { toggleComplete } = cardSlice.actions;
 
-export default todoSlice.reducer;
+export default cardSlice.reducer;
