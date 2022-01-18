@@ -21,7 +21,6 @@ const CardField = () => {
   }, [dispatch])
 
   useEffect(()=>{
-    console.log('1')
     if (filter) {
       setRenderCards(filterCards);
     } else setRenderCards(cards);
