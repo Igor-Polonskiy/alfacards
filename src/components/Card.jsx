@@ -3,16 +3,9 @@ import {toggleLike, deleteCard} from '../store/todoSlice';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart } from '@fortawesome/free-solid-svg-icons'
 import '../App.css'
-import { useRef } from 'react';
-
-
 
 const Card = ({ id, url, liked }) => {
-//const heart = useRef()
   const dispatch = useDispatch();
-  //function handleClick(){
- //   heart.current.classList.toggle('liked');
- // }
 
   const unlikedCard = <FontAwesomeIcon icon={faHeart} className="icon unliked" />
   const likedCard = <FontAwesomeIcon icon={faHeart} className="icon liked" />

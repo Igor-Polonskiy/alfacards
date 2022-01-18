@@ -1,8 +1,30 @@
-import { createSlice } from '@reduxjs/toolkit';
+import {
+    createAsyncThunk,
+    createSlice
+} from '@reduxjs/toolkit';
+
+export const fetchCards = createAsyncThunk(
+    'cards/fetchCards',
+    async function(_, { rejectWithValue }) {
+        try {
+            const response = await fetch('https://jsonplaceholder.typicode.com/photos?_limit=20')
+
+            if (!response.ok) {
+                throw new Error('Server Error!')
+            }
+            const data = await response.json()
+            data.map(cards => cards.liked = false)
+
+            return data
+        } catch (error) {
+            return rejectWithValue(error.masage)
+        }
+
+    }
+)
 
 
-
-const initialState = {
+/*const initialState = {
     cards: [{
             "albumId": 1,
             "id": 1,
@@ -74,15 +96,18 @@ const initialState = {
             "thumbnailUrl": "https://via.placeholder.com/150/810b14"
         },
     ]
-}
+}*/
 
-initialState.cards.map(card => card.liked = false)
+//initialState.cards.map(card => card.liked = false)
 
 const cardSlice = createSlice({
     name: 'cards',
-    initialState,
+    initialState: {
+        cards: [],
+        status: null,
+        error: null,
+    },
     reducers: {
-
         toggleLike(state, action) {
             const toggledLike = state.cards.find(card => card.id === action.payload.id);
             toggledLike.liked = !toggledLike.liked;
@@ -91,11 +116,28 @@ const cardSlice = createSlice({
         deleteCard(state, action) {
             state.cards = state.cards.filter(card => card.id !== action.payload.id)
         },
-
-
     },
+    extraReducers: {
+        [fetchCards.pending]: (state, action) => {
+            state.status = 'loading';
+            state.error = null;
+        },
+        [fetchCards.fulfilled]: (state, action) => {
+            state.status = 'resolved';
+            console.log(action);
+            state.cards = action.payload;
+
+        },
+        [fetchCards.rejected]: (state, action) => {
+            state.status = 'rejected';
+            state.error = action.payload;
+        }
+    }
 });
 
-export const { toggleLike, deleteCard } = cardSlice.actions;
+export const {
+    toggleLike,
+    deleteCard
+} = cardSlice.actions;
 
 export default cardSlice.reducer;
