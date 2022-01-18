@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/alfacards/static/css/main.ba4184f0.css",
+    "main.js": "/alfacards/static/js/main.6d9a8c62.js",
+    "static/js/787.ce7d1c37.chunk.js": "/alfacards/static/js/787.ce7d1c37.chunk.js",
+    "index.html": "/alfacards/index.html",
+    "main.ba4184f0.css.map": "/alfacards/static/css/main.ba4184f0.css.map",
+    "main.6d9a8c62.js.map": "/alfacards/static/js/main.6d9a8c62.js.map",
+    "787.ce7d1c37.chunk.js.map": "/alfacards/static/js/787.ce7d1c37.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.ba4184f0.css",
+    "static/js/main.6d9a8c62.js"
+  ]
+}
